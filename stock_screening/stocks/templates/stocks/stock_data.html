@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="{% static 'stocks/styles.css' %}">
+
+<html>
+<head>
+    <title>Stock Data</title>
+</head>
+<body>
+    <div class="content-container">
+    <h1>Get data on stocks!</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="symbol">Enter a stock symbol, e.g AAPL:</label><br>
+        <input type="text" id="symbol" name="symbol" class="symbol"><br>
+        <input type="submit" value="Submit" id="submit">
+    </form>
+    {% if data %}
+        {% if data.error %}
+            <p>{{ data.error }}</p>
+        {% else %}
+            <h2>Data for {{ data.symbol }}</h2>
+            <p>Last refresh: {{ data.latest_trading_day }}</p>
+            <ul>
+                <li>Open: {{ data.open }}</li>
+                <li class="high">High: {{ data.high }}</li>
+                <li class="low">Low: {{ data.low }}</li>
+                <li>Price: {{ data.price }}</li>
+                <li>Volume: {{ data.volume }} (shares traded)</li>
+                <li>Previous Close: {{ data.previous_close }}</li>
+                <li>Change: {{ data.change }}</li>
+                <li>Change Percent: {{ data.change_percent }}</li>
+            </ul>
+        {% endif %}
+    {% else %}
+        <p>No data available. Please enter a stock symbol and click 'Submit'.</p>
+    {% endif %}
+</div>
+</body>
+</html>
+
+
+
+
